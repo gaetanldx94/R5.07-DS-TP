@@ -16,7 +16,7 @@ jobs:
     - name: Create Q2_archive_README.md
       run: |
         echo "Ledoux Gaétan" > Q2_archive_README.md
-        echo " " > Q2_archive_README.md
+        echo "" >> Q2_archive_README.md
         echo "Date et heure d'exécution : $(date)" >> Q2_archive_README.md
         echo "" >> Q2_archive_README.md
         cat README.md >> Q2_archive_README.md
