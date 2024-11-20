@@ -15,7 +15,7 @@ jobs:
 
     - name: Create Q3_archive_java.txt
       run: |
-        echo "Ledoux GAétan" > Q3_archive_java.txt
+        echo "Ledoux Gaétan" > Q3_archive_java.txt
         echo "" >> Q3_archive_java.txt
         cat Q3.java >> Q3_archive_java.txt
 
