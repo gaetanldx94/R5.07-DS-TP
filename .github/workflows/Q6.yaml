@@ -33,7 +33,7 @@ jobs:
         PREVIOUS_FILE=$(ls Q6_archive_*.txt | sort | tail -n 2 | head -n 1)
         echo "::set-output name=previous_file::$PREVIOUS_FILE"
       
-    - name: Compare files and create Q6_différences.txt
+    - name: Compare files and create Q6_differences.txt
       if: steps.previous_file.outputs.previous_file != ''
       run: |
         DIFF_FILE="Q6_différences.txt"
