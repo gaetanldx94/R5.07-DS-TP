@@ -1,0 +1,37 @@
+name: Create Q4_archive_date
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Get formatted date
+      id: date
+      run: echo "::set-output name=current_date::$(date +'%d-%m-%Y')"
+
+    - name: Create Q4_archive_date.txt
+      run: |
+        FILE_NAME="Q4_archive_$(date +'%d-%m-%Y').txt"
+        echo "Ledoux Gaétan" > $FILE_NAME
+        echo "" >> $FILE_NAME
+        cat Q4.java >> $FILE_NAME
+
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Commit and push changes
+      run: |
+        FILE_NAME="Q4_archive_$(date +'%d-%m-%Y').txt"
+        git add $FILE_NAME
+        git commit -m "Add $FILE_NAME"
+        git push
