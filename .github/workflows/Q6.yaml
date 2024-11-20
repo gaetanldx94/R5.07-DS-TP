@@ -25,7 +25,7 @@ jobs:
         cat Q6.java >> $FILE_NAME
         echo "" >> $FILE_NAME
         echo "Taille du fichier Q6.java :" >> $FILE_NAME
-        wc Q6.java >> $FILE_NAME
+        wc -l -c Q6.java >> $FILE_NAME  # wc -l pour le nombre de lignes, wc -c pour le nombre de caractères
 
     - name: Get previous Q6 archive file
       id: previous_file
