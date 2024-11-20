@@ -1,0 +1,31 @@
+name: Create Q3_archive_java
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Create Q3_archive_java.txt
+      run: |
+        echo "Ledoux GAétan" > Q3_archive_java.txt
+        echo "" >> Q3_archive_java.txt
+        cat Q3.java >> Q3_archive_java.txt
+
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Commit and push changes
+      run: |
+        git add Q3_archive_java.txt
+        git commit -m "Add Q3_archive_java.txt"
+        git push
