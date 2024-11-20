@@ -1,0 +1,53 @@
+name: Create Q6_archive_and_diff
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-and-diff:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Get formatted date
+      id: date
+      run: echo "::set-output name=current_date::$(date +'%d-%m-%Y-%H%M%S')"
+
+    - name: Create Q6_archive_date.txt
+      run: |
+        FILE_NAME="Q6_archive_${{ steps.date.outputs.current_date }}.txt"
+        echo "Ledoux Gaétan" > $FILE_NAME
+        echo "" >> $FILE_NAME
+        cat Q6.java >> $FILE_NAME
+        echo "" >> $FILE_NAME
+        echo "Taille du fichier Q6.java :" >> $FILE_NAME
+        wc Q6.java >> $FILE_NAME
+
+    - name: Get previous Q6 archive file
+      id: previous_file
+      run: |
+        PREVIOUS_FILE=$(ls Q6_archive_*.txt | sort | tail -n 2 | head -n 1)
+        echo "::set-output name=previous_file::$PREVIOUS_FILE"
+      
+    - name: Compare files and create Q6_différences.txt
+      if: steps.previous_file.outputs.previous_file != ''
+      run: |
+        DIFF_FILE="Q6_différences.txt"
+        diff ${{ steps.previous_file.outputs.previous_file }} Q6_archive_${{ steps.date.outputs.current_date }}.txt > $DIFF_FILE
+
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Commit and push changes
+      run: |
+        FILE_NAME="Q6_archive_${{ steps.date.outputs.current_date }}.txt"
+        DIFF_FILE="Q6_différences.txt"
+        git add $FILE_NAME $DIFF_FILE
+        git commit -m "Add $FILE_NAME and $DIFF_FILE"
+        git push
